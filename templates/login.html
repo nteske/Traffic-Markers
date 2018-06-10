@@ -1,0 +1,27 @@
+{% extends "prijavljivanje.html" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block main %}
+
+    <div class="login-page">
+        <div class="form">
+            <form class="login-form" action="{{ url_for('login') }}" method="post">
+                <input type="text" name="name" placeholder="username"/>
+                <input type="password" name="pass" placeholder="password"/>
+                <button>login</button>
+                <p class="message">Not registered? <a href="/register">Create an account</a></p>
+            </form>
+
+
+        </div>
+        {% if error != none %}
+        <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                {{error}}
+              </div>
+        {% endif %}
+      </div>
+{% endblock %}
