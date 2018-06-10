@@ -30,7 +30,18 @@ Session(app)
 @app.route("/")
 @login_required
 def index():
+    return render_template("index.html")
+
+@app.route("/account", methods=["GET", "POST"])
+@login_required
+def account():
     return "cao"
+
+@app.route("/logout")
+@login_required
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
 
 @app.route("/login", methods=["GET", "POST"])
 @logged

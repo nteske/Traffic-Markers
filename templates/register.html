@@ -12,7 +12,7 @@
                 <input type="password" placeholder="password" name="pass"/>
                 <input name="adresa" type="email" placeholder="email address" />
                 <button>create</button>
-                <p class="message">Already registered? <a href="/login">Sign In</a></p>
+                <p class="message">Already registered? <a href="{{ url_for('login') }}">Sign In</a></p>
             </form>
         </div>
         {% if error != none %}
@@ -23,3 +23,4 @@
         {% endif %}
       </div>
 {% endblock %}
+
