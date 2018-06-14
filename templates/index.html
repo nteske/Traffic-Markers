@@ -8,4 +8,15 @@
     <div class="container-fluid">
         <div id="map-canvas"></div>
     </div>
+    <div class="form">
+            <form class="unos-form" action="{{ url_for('index') }}" method="post" enctype="multipart/form-data">
+                    <label for="upload">
+                 <span id="dodajSliku" class="btn btn-primary btn-circle btn-lg">
+                    <i class="fas fa-camera-retro"></i>
+                 </span>
+                 <input type="file" name="file" id="upload" onchange="form.submit()"  style="display:none">
+                 </label>
+            </form>
+    </div>
+ 
 {% endblock %}

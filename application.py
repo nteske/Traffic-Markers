@@ -1,14 +1,23 @@
-
+import os
+import re
 from cs50 import SQL
 from flask import Flask
-from flask import Flask, flash, redirect, render_template, request, session, url_for
+from flask import Flask, flash, redirect, render_template, request, session, url_for, send_from_directory
 from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from helpers import login_required,logged
+from werkzeug.utils import secure_filename
 
+UPLOAD_FOLDER = './uploaded/images'
+ALLOWED_EXTENSIONS = set(['jpg'])
+
+from flask_jsglue import JSGlue
 
 app=Flask(__name__)
+JSGlue(app)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 db = SQL("sqlite:///traffic.db")
 
@@ -25,12 +34,40 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route("/")
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static','images'),
+                          'ikonica.ico',mimetype='image/vnd.microsoft.icon')
+
+@app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
-    return render_template("index.html")
+    if request.method == "POST":
+        if 'file' not in request.files:
+            print('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            print('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], "fotka.jpg"))
+            print("kul")
+            return redirect(url_for('uploaded_file',
+                                    filename=filename))
+    else:
+        return render_template("index.html")
+
+
 
 @app.route("/account", methods=["GET", "POST"])
 @login_required

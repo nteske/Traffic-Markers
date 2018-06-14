@@ -86,7 +86,7 @@
     color: #EF3B3A;
 }
 body {
-    background-image: url("../static/pozadina.jpg");
+    background-image: url("../static/images/pozadina.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     font-family: "Roboto", sans-serif;   

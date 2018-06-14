@@ -1,0 +1,35 @@
+ html, body{
+     padding-bottom: 0px;
+     overflow: hidden;
+ }
+ #map-canvas, .container-fluid
+{
+    /* height of these elements */
+    height: 93%;
+
+    /* no margin around these elements */
+    margin: 0;
+
+    /* disable scrollbars */
+    overflow: hidden;
+
+    /* no padding within these elements */
+    padding: 0;
+
+    margin:0;
+}
+
+  .btn-circle.btn-lg{
+    position: absolute;
+    bottom: 5%;
+    right: 2%;
+    width: 60px;
+    height: 60px;
+    padding: 10px 10px;
+    padding-top:17px;
+    font-size: 24px;
+    line-height: 1.33;
+    border-radius: 35px;
+    display: none;
+  }
+  
