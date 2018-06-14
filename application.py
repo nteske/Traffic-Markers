@@ -2,14 +2,14 @@ import os
 import re
 from cs50 import SQL
 from flask import Flask
-from flask import Flask, flash, redirect, render_template, request, session, url_for, send_from_directory
+from flask import Flask, flash, redirect, jsonify,render_template, request, session, url_for, send_from_directory
 from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from helpers import login_required,logged
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = './uploaded/images'
+UPLOAD_FOLDER = './static/uploaded/images/'
 ALLOWED_EXTENSIONS = set(['jpg'])
 
 from flask_jsglue import JSGlue
@@ -48,24 +48,27 @@ def favicon():
 @app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
+    error = None
     if request.method == "POST":
         if 'file' not in request.files:
-            print('No file part')
-            return redirect(request.url)
+            error='No file part'
         file = request.files['file']
-        # if user does not select file, browser also
-        # submit a empty part without filename
         if file.filename == '':
-            print('No selected file')
-            return redirect(request.url)
+            error='No selected file'
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], "fotka.jpg"))
-            print("kul")
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
+            lat=float(request.form.get("sirina"))
+            longi=float(request.form.get("duzina"))
+            if toclose(lat,longi) == 1:
+                result = db.execute("INSERT INTO markers (user, latitude,longitude) VALUES (:user,:lat,:longi)", user=session["user_id"],lat=lat,longi=longi)
+                ispisfile=str(result)+".jpg"
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'],ispisfile))
+            else:
+                error="marker is too close"
+        else:
+            error="The file format must be .jpg"
+        return render_template("index.html",error=error)
     else:
-        return render_template("index.html")
+        return render_template("index.html",error=error)
 
 
 
@@ -153,6 +156,60 @@ def register():
             return render_template("register.html",error=error)
     else:
         return render_template("register.html",error=error)
+#44.7793757,20.4589297
+#44.780183,20.4582216
+#0.01
+def toclose(latids,longit):
+    rows = db.execute("""SELECT * FROM markers
+            WHERE latitude > :latdmin AND  latitude < :latdmax AND  longitude > :longitmin AND longitude < :longitmax
+            """,
+            latdmin=latids-0.01,latdmax=latids+0.01, longitmin=longit-0.01,longitmax=longit+0.01)
+    if len(rows) < 1:
+        return 1
+    else:
+        return 0
+
+@app.route("/update")
+def update():
+    """Find up to 10 places within view."""
+
+    # ensure parameters are present
+    if not request.args.get("sw"):
+        raise RuntimeError("missing sw")
+    if not request.args.get("ne"):
+        raise RuntimeError("missing ne")
+
+    # ensure parameters are in lat,lng format
+    if not re.search("^-?\d+(?:\.\d+)?,-?\d+(?:\.\d+)?$", request.args.get("sw")):
+        raise RuntimeError("invalid sw")
+    if not re.search("^-?\d+(?:\.\d+)?,-?\d+(?:\.\d+)?$", request.args.get("ne")):
+        raise RuntimeError("invalid ne")
+
+    # explode southwest corner into two variables
+    (sw_lat, sw_lng) = [float(s) for s in request.args.get("sw").split(",")]
+
+    # explode northeast corner into two variables
+    (ne_lat, ne_lng) = [float(s) for s in request.args.get("ne").split(",")]
+
+    # find 10 cities within view, pseudorandomly chosen if more within view
+    if (sw_lng <= ne_lng):
+
+        # doesn't cross the antimeridian
+        rows = db.execute("""SELECT * FROM markers
+            WHERE :sw_lat <= latitude AND latitude <= :ne_lat AND (:sw_lng <= longitude AND longitude <= :ne_lng) 
+             LIMIT 10""",
+            sw_lat=sw_lat, ne_lat=ne_lat, sw_lng=sw_lng, ne_lng=ne_lng)
+
+    else:
+
+        # crosses the antimeridian
+        rows = db.execute("""SELECT * FROM markers
+            WHERE :sw_lat <= latitude AND latitude <= :ne_lat AND (:sw_lng <= longitude OR longitude <= :ne_lng) 
+             LIMIT 10""",
+            sw_lat=sw_lat, ne_lat=ne_lat, sw_lng=sw_lng, ne_lng=ne_lng)
+
+    # output places as JSON
+    return jsonify(rows)
 
 if __name__=='__main__':
     app.debug= True

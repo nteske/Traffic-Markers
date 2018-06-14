@@ -9,8 +9,11 @@
         <div id="map-canvas"></div>
     </div>
     <div class="form">
+           
             <form class="unos-form" action="{{ url_for('index') }}" method="post" enctype="multipart/form-data">
-                    <label for="upload">
+                <input type="text" style="display:none;" id="sirina" name="sirina" value="2.0" />
+                <input type="text" style="display:none;" id="duzina" name="duzina" value="2.0" />   
+                <label for="upload">
                  <span id="dodajSliku" class="btn btn-primary btn-circle btn-lg">
                     <i class="fas fa-camera-retro"></i>
                  </span>
@@ -18,5 +21,11 @@
                  </label>
             </form>
     </div>
+    {% if error != none %}
+        <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                {{error}}
+              </div>
+        {% endif %}
  
 {% endblock %}

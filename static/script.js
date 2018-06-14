@@ -2,6 +2,8 @@
 var map;
 
 // markers for map
+var markers = [];
+
 // info window
 var info = new google.maps.InfoWindow();
 
@@ -262,6 +264,7 @@ function showPosition(position) {
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         maxZoom: 14,
         panControl: true,
+        gestureHandling: 'greedy',
         styles: styles,
         zoom: 13,
         zoomControl: false,
@@ -293,13 +296,13 @@ function configure()
         // http://stackoverflow.com/a/12410385
         if (!info.getMap || !info.getMap())
         {
-          
+          update();
         }
     });
 
     // update UI after zoom level changes
     google.maps.event.addListener(map, "zoom_changed", function() {
- 
+      update();
     });
 
     // re-enable ctrl- and right-clicking (and thus Inspect Element) on Google Map
@@ -310,6 +313,7 @@ function configure()
         event.cancelBubble && event.cancelBubble();
     }, true);
     $("#dodajSliku").css("display","block");
+    update();
     autoUpdate();
 }
 
@@ -319,9 +323,14 @@ function autoUpdate() {
   navigator.geolocation.getCurrentPosition(function(position) {  
     var newPoint = new google.maps.LatLng(position.coords.latitude, 
                                           position.coords.longitude);
+    document.getElementById("sirina").value = position.coords.latitude;
+    document.getElementById("duzina").value = position.coords.longitude;
+
+
 
     if (marker) {
       marker.setPosition(newPoint);
+      
     }
     else {
         var image = {
@@ -337,5 +346,102 @@ function autoUpdate() {
     }
   }); 
   setTimeout(autoUpdate, 5000);
+}
+
+function update()
+{
+    // get map's bounds
+    var bounds = map.getBounds();
+    var ne = bounds.getNorthEast();
+    var sw = bounds.getSouthWest();
+
+    // get places within bounds (asynchronously)
+    var parameters = {
+        ne: ne.lat() + "," + ne.lng(),
+        sw: sw.lat() + "," + sw.lng()
+    };
+    $.getJSON(Flask.url_for("update"), parameters)
+    .done(function(data, textStatus, jqXHR) {
+
+       // remove old markers from map
+       removeMarkers();
+       // add new markers to map
+       for (var i = 0; i < data.length; i++)
+       {
+           addMarker(data[i]);
+       }
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+
+        // log error to browser's console
+        console.log(errorThrown.toString());
+    });
+}
+
+function showInfo(marker, content)
+{
+    // start div
+    var div = "<div id='info'>";
+    if (typeof(content) == "undefined")
+    {
+        // http://www.ajaxload.info/
+        div += "<img alt='loading' src='/static/ajax-loader.gif'/>";
+    }
+    else
+    {
+        div += content;
+    }
+
+    // end div
+    div += "</div>";
+
+    // set info window's content
+    info.setContent(div);
+
+    // open info window (if not already open)
+    info.open(map, marker);
+}
+
+function removeMarkers()
+{
+    //prilazimo kroz niz markera
+    for (var i in markers)
+    {
+        //brisemo svaki marker s mape
+        markers[i].setMap(null);
+    }
+    //i na kraju praznimo niz
+    markers=[];
+}
+function addMarker(place)
+{
+  //uzimamo poziciju markera na osnovu njegove geogradkse duzina i sirine
+   var kordinate = new google.maps.LatLng(parseFloat(place.latitude), parseFloat(place.longitude));
+
+
+  //kreiramo ikonicu za marker velicine 50x50px i govorimo gde ce se label nalaziti
+   var image = {
+    url: "/static/images/traffic.png",
+    size: new google.maps.Size(70, 70),
+    scaledSize: new google.maps.Size(70, 70),
+  };
+
+    var tacka = new google.maps.Marker({
+        position: kordinate,
+        icon: image
+    });
+
+//Београд
+//44.860776, 20.591028
+
+    tacka.addListener('click', ()=>{
+        unos="<img src='static/uploaded/images/"+place.id+".jpg' alt='Smiley face' height='100' width='150'>";
+        showInfo(tacka, unos);
+    });
+    //dodajemo makrker u niz
+    markers.push(tacka);
+
+    //i prikazujemo marker na mapi
+    tacka.setMap(map);
 }
 
