@@ -360,7 +360,7 @@ function update()
         ne: ne.lat() + "," + ne.lng(),
         sw: sw.lat() + "," + sw.lng()
     };
-    $.getJSON(Flask.url_for("update"), parameters)
+    $.getJSON(Flask.url_for("maps.update"), parameters)
     .done(function(data, textStatus, jqXHR) {
 
        // remove old markers from map

@@ -31,7 +31,7 @@
           
 
             <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #6c4b78;">
-                    <a class="navbar-brand" href="{{ url_for('index') }}">Traffic Markers</a>
+                    <a class="navbar-brand" href="{{ url_for('maps.index') }}">Traffic Markers</a>
 
                     
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,10 +41,10 @@
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav ml-auto">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ url_for('account') }}">Profile </a>
+                                    <a class="nav-link" href="{{ url_for('users.account') }}">Profile </a>
                                 </li>
                                 <li class="nav-item">
-                                        <a class="nav-link" href="{{ url_for('logout') }}">Log out </a>
+                                        <a class="nav-link" href="{{ url_for('users.logout') }}">Log out </a>
                                 </li>
                             </ul>
                     </div>
