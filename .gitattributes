@@ -1,3 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-static/* linguist-vendored
+project/templates/* linguist-vendored
+project/static/* linguist-vendored
