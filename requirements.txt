@@ -2,6 +2,7 @@ astroid==1.6.5
 click==6.7
 colorama==0.3.9
 cs50==2.4.1
+Django==2.0.6
 Flask==1.0.2
 Flask-JSGlue==0.3.1
 Flask-Session==0.3.1
@@ -15,6 +16,7 @@ module==0.2.1
 passlib==1.7.1
 protobuf==3.5.2.post1
 pylint==1.9.2
+pytz==2018.4
 six==1.11.0
 SQLAlchemy==1.2.8
 sqlparse==0.2.4
