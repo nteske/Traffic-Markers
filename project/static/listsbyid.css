@@ -39,10 +39,10 @@
   }
   
   .card.hovercard .avatar img {
-    width: 150px;
-    height: 150px;
-    max-width: 150px;
-    max-height: 150px;
+    width: 120px;
+    height: 120px;
+    max-width: 120px;
+    max-height: 120px;
     -webkit-border-radius: 50%;
        -moz-border-radius: 50%;
             border-radius: 50%;
