@@ -10,7 +10,6 @@
      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet"/>
 
     <!-- https://developers.google.com/maps/documentation/javascript/ -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAhFnVBbRqiFw5MlAd45HHbTjVvGGq0Nc&v=3.exp"></script>
@@ -25,7 +24,6 @@
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     {{ JSGlue.include() }}
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
     </head>
     <body>
           
@@ -40,6 +38,9 @@
               
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav ml-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ url_for('marks.lists') }}">Markers </a>
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ url_for('users.account') }}">Profile </a>
                                 </li>

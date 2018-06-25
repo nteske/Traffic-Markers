@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Lists By Id
+{% endblock %}
+
+{% block main %}
+<link href="{{ url_for('static', filename='listsbyid.css') }}" rel="stylesheet"/>
+<div class="container">
+    <div class="card hovercard">
+       <img src="../static/uploaded/images/{{image}}.jpg" alt=""/>
+       <div class="avatar">
+          <img src="../static/avatars/{{person}}" class="img-thumbnail" alt="" />
+       </div>
+       <div class="info">
+          <div class="title">
+             user: {{name}}<br>
+             position: {{lat}}<br>
+             time: {{time}}
+          </div>
+       </div>
+
+    </div>
+    </div>
+    
+    
+{% endblock %}
+

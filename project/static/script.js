@@ -422,8 +422,8 @@ function addMarker(place)
   //kreiramo ikonicu za marker velicine 50x50px i govorimo gde ce se label nalaziti
    var image = {
     url: "/static/images/traffic.png",
-    size: new google.maps.Size(70, 70),
-    scaledSize: new google.maps.Size(70, 70),
+    size: new google.maps.Size(50, 50),
+    scaledSize: new google.maps.Size(50, 50),
   };
 
     var tacka = new google.maps.Marker({
@@ -435,8 +435,10 @@ function addMarker(place)
 //44.860776, 20.591028
 
     tacka.addListener('click', ()=>{
-        unos="<img src='static/uploaded/images/"+place.id+".jpg' alt='Smiley face' height='100' width='150'>";
-        showInfo(tacka, unos);
+
+      unos="<a target='_blank' class='nav-link' href='/lists/"+place.id+"'>"
+        unos+="<img src='static/uploaded/images/"+place.id+".jpg' alt='Smiley face' height='100' width='150'>";
+        showInfo(tacka, unos+"</a>");
     });
     //dodajemo makrker u niz
     markers.push(tacka);

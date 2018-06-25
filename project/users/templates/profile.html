@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block main %}
+<link href="{{ url_for('static', filename='profile.css') }}" rel="stylesheet" type="text/css"/>
+<div class="container" style="padding-top: 60px; margin:0 auto 5px;">
+    <form class="change-form" action="{{ url_for('users.account') }}" method="post" enctype="multipart/form-data">
+    <div class="row">
+      <!-- left column -->
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="text-center">
+                <img src="static/avatars/{{avatar}}" class="avatar rounded-circle img-thumbnail" alt="avatar">
+            <label for="uploader" class="kamera">
+                    <img src="static/images/camera2.png" class="taster">
+                <input type="file" name="file" id="uploader"  style="display:none">
+            </label>
+        </div>
+      </div>
+      <!-- edit form column -->
+      <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
+        {% if error != none %}
+        <div class="alert alert-info alert-dismissable">
+          <a class="panel-close close" data-dismiss="alert">×</a> 
+          <i class="fa fa-coffee"></i>
+          {{error}}
+        </div>
+        {% endif %}
+        <h3>Personal info</h3>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Username:</label>
+            <div class="col-md-8">
+              <input class="form-control" name="username" value="{{name}}" type="text">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Email:</label>
+            <div class="col-md-8">
+              <input class="form-control" name="email" value="{{email}}" type="email">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Password:</label>
+            <div class="col-md-8">
+              <input class="form-control" name="pass" value="" type="password">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">New password:</label>
+            <div class="col-md-8">
+              <input class="form-control" name="newpass" value="" type="password">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label"></label>
+            <div class="col-md-8">
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+              <span></span>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </form>
+  </div>
+  <script>
+        $(function(){
+            $('#uploader').change(function(){
+              var input = this;
+              var url = $(this).val();
+              var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+              if (input.files && input.files[0]&& ( ext == "png" || ext == "jpeg" || ext == "jpg")) 
+               {
+                  var reader = new FileReader();
+          
+                  reader.onload = function (e) {
+                     $('.avatar').attr('src', e.target.result);
+                  }
+                 reader.readAsDataURL(input.files[0]);
+              }
+              else
+              {
+                $('.avatar').attr('src', 'static/avatars/{{avatar}}');
+              }
+            });
+          
+          });
+  </script>
+{% endblock %}

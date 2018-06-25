@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Lists
+{% endblock %}
+
+{% block main %}
+<link href="{{ url_for('static', filename='lists.css') }}" rel="stylesheet"/>
+
+<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<div class='container'>
+    {% for dt in data %}
+    <a class="nav-link" href="{{ url_for('marks.listid',page_id=dt.id) }}">
+    <div class='list-card'>
+        <img alt='' src="static/uploaded/images/{{dt.id}}.jpg">
+        <div class='list-details'>
+          <div class='list-name'>posted by: {{dt.user}}</div>
+          <div class='list-location'>{{dt.latitude}} {{dt.longitude}}</div>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</link>
+
+{% endblock %}
+
