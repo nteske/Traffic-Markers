@@ -5,11 +5,12 @@ from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from werkzeug.utils import secure_filename
-
+from flask_sslify import SSLify
 from flask_jsglue import JSGlue
 
 app=Flask(__name__)
 JSGlue(app)
+sslify = SSLify(app)
 
 UPLOAD_FOLDER = './static/uploaded/images/'
 
@@ -17,12 +18,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db = SQL("sqlite:///traffic.db")
 
-@app.before_request
-def before_request():
-    if request.url.startswith('http://'):
-        url = request.url.replace('http://', 'https://', 1)
-        code = 301
-        return redirect(url, code=code)
 
 @app.after_request
 def after_request(response):
