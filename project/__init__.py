@@ -9,9 +9,9 @@ from flask_sslify import SSLify
 from flask_jsglue import JSGlue
 
 app=Flask(__name__)
-JSGlue(app)
 if 'DYNO' in os.environ:
     sslify = SSLify(app)
+JSGlue(app)
 
 UPLOAD_FOLDER = './static/uploaded/images/'
 
