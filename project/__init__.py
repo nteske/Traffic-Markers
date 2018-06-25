@@ -17,6 +17,13 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db = SQL("sqlite:///traffic.db")
 
+@app.before_request
+def before_request():
+    if request.url.startswith('http://'):
+        url = request.url.replace('http://', 'https://', 1)
+        code = 301
+        return redirect(url, code=code)
+
 @app.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"

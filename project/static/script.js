@@ -3,6 +3,7 @@ var map;
 
 // markers for map
 var markers = [];
+var endmark=null;
 
 // info window
 var info = new google.maps.InfoWindow();
@@ -289,6 +290,40 @@ function showPosition(position) {
  */
 function configure()
 {
+  directionsDisplay = new google.maps.DirectionsRenderer(
+    {
+        suppressMarkers: true
+    });
+  directionsDisplay.setMap(map);
+  directionsDisplay.setPanel(document.getElementById("directionsPanel"));
+
+  var directionsService = new google.maps.DirectionsService();
+  google.maps.event.addListener(map, 'dblclick', (event)=>{
+    var start = new google.maps.LatLng(parseFloat(document.getElementById("sirina").value),parseFloat(document.getElementById("duzina").value));
+    var end = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+
+    if (endmark) {
+      endmark.setPosition(end);
+    }
+    else {
+        endmark = new google.maps.Marker({
+        position: end,
+        map: map,
+      });
+    }
+
+		var request = {
+      origin: start,
+      destination: end,
+      travelMode: google.maps.TravelMode.DRIVING
+    };
+    directionsService.route(request, function (response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(response);
+      }
+    });			
+  });
+
     // update UI after map has been dragged
     google.maps.event.addListener(map, "dragend", function() {
 
