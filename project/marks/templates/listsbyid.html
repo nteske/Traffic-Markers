@@ -14,7 +14,14 @@
        </div>
        <div class="info">
           <div class="title">
-             user: {{name}}<br>
+             user: {{name}}
+             {% if user[0].username == name %}
+             <form action="{{ url_for('marks.listid',page_id=image) }}" style="margin:0px; display:inline-block;" method="post">
+                    <input id="prodId" name="all" type="hidden"  value="{{image}}">
+                  <button id="deletebtn" type="submit" class="btn btn-danger">Delete</button>
+                  </form>
+            {% endif %}
+            <br>
              position: {{lat}}<br>
              time: {{time}}
           </div>
@@ -23,6 +30,36 @@
     </div>
     </div>
     
+
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <div class='container'>
+        {% for dt in data %}
+        <div class='list-card'>
+            <img alt='' src="../static/avatars/{{dt.avatar}}" class="rounded-circle img-thumbnail">
+            <div class='list-details'>
+              <div class='list-name' style="display:inline-block;">{{dt.user}}</div>
+              {% if user[0].username == dt.user %}
+              <form action="{{ url_for('marks.listid',page_id=image) }}" style="display:inline-block;" method="post">
+                <input id="prodId" name="prodId" type="hidden"  value="{{dt.id}}">
+              <button id="deletebtn" type="submit" class="btn btn-danger">Delete</button>
+              </form>
+              {% endif %}
+              <div class='list-location'>{{dt.text}}</div>
+            </div>
+          </div>
+        {% endfor %}
+        <div class='list-card'>
+            <img alt='' src="../static/avatars/{{user[0].avatar}}" class="rounded-circle img-thumbnail">
+            <div class='list-details'>
+              <div class='list-name'>{{user[0].username}}</div>
+              <form action="{{ url_for('marks.listid',page_id=image) }}" method="post">
+              <textarea placeholder="comment.." class="list-location form-control" rows="2" cols="50" id="text" name="text_name" style="resize: none; margin:2px;"></textarea>
+              <button type="submit" id="dodaj" class="btn btn-success">Post</button>
+                </form>
+            </div>
+          </div>
+      </div>
+    </link>
     
 {% endblock %}
 

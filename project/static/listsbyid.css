@@ -28,8 +28,8 @@
   }
   
   .card.hovercard img {
-    width: 600px;
-    height: 300px;
+    max-width: 600px;
+    max-height: 250px;
   }
   
   .card.hovercard .avatar {
@@ -51,6 +51,8 @@
   .card.hovercard .info {
     padding: 4px 8px 10px;
   }
+
+
   
   .card.hovercard .info .title {
     margin-bottom: 4px;
@@ -72,6 +74,13 @@
     padding: 0 20px;
     margin-bottom: 17px;
   }
+  #deletebtn{
+    width: 50px;
+    height: 20px;
+    padding: 0px;
+    line-height: 0;
+    margin-left: 5px;
+  }
   
   .card.people .card-bottom {
     position: absolute;
@@ -85,4 +94,68 @@
     -webkit-box-sizing: border-box;
        -moz-box-sizing: border-box;
             box-sizing: border-box;
+  }
+
+  html {
+    background-color: #eee;
+    font-family: 'Lato';
+  }
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    overflow: auto;
+  }
+  .container .list-card {
+    margin: 5px auto 5px;
+    overflow: auto;
+    max-width: 550px;
+    border: 1px solid #ccc;
+  }
+
+  .container .list-card img {
+    width: 130px;
+    height: 130px;
+    border: 0;
+    display: inline-block;
+    float: left;
+    margin-right: 18px;
+  }
+
+  .list-details {
+    float: none;
+  }
+  .list-name {
+    font-size: 20px;
+    display: block;
+  }
+
+  .form-control {
+    max-width: 180px; 
+  }
+  @media (min-width: 768px) {
+    .form-control {
+      max-width: 300px; 
+    }
+  }
+  @media (max-width: 330px) {
+    .form-control {
+      max-width: 110px; 
+    }
+  }
+  #dodaj{
+    height: 30px;
+    margin-top: 7px;
+    padding-top:2px;
+  }
+
+
+  .list-landmark,
+  .list-location {
+    font-size: 14px;
+    opacity: 0.8;
+    margin: 2px 0;
+  }
+  .list-rooms {
+    font-size: 12px;
   }
