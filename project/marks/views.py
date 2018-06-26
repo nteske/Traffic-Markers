@@ -30,7 +30,7 @@ def listid(page_id):
     marker = page_id
     table = db.execute("SELECT * FROM markers WHERE id=:id", id=int(marker))
     if len(table)==0:
-        return showlist()
+        return redirect(url_for("marks.lists"))
     if request.method == "POST":
         if request.form.get("text_name"):
             hajde=str(request.form["text_name"])
